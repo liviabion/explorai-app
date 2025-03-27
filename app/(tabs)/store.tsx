@@ -50,13 +50,13 @@ export default function StoreScreen() {
       return;
     }
 
-    if (user.points < item.cost) {
+    if (user.coins < item.cost) {
       Alert.alert('Saldo insuficiente', 'Você não tem moedas suficientes.');
       return;
     }
 
     if (item.cost > 0) {
-      setUser(prev => ({ ...prev, points: prev.points - item.cost }));
+      setUser(prev => ({ ...prev, coins: prev.coins - item.cost }));
     }
     setPurchased(prev => [...prev, item.id]);
     Alert.alert('Sucesso', `Você adquiriu "${item.title}"!`);
@@ -68,7 +68,7 @@ export default function StoreScreen() {
         <Text style={styles.headerTitle}>LOJA CULTURAL</Text>
         <View style={styles.balanceContainer}>
           <Ionicons name="wallet-outline" size={16} color={Colors.white} />
-          <Text style={styles.balanceText}>{user.points}</Text>
+          <Text style={styles.balanceText}>{user.coins}</Text>
         </View>
       </View>
 
