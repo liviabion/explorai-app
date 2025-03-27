@@ -3,14 +3,7 @@ import { useAuth } from '@/contexts/auth-context';
 import { useRouter } from 'expo-router';
 import Colors from '@/constants/colors';
 import Fonts from '@/constants/fonts';
-
-const user = {
-  name: 'FOLIANTE BRINCANTE',
-  level: 7,
-  points: 4325,
-  nextLevelPoints: 5000,
-  avatar: require('@/assets/images/icon.png'),
-};
+import { useUser } from '@/contexts/user-context';
 
 const journeys = [
   {
@@ -30,15 +23,28 @@ const journeys = [
 ];
 
 const collected = [
-  Colors.softRed,
-  Colors.blue,
-  Colors.brown,
-  Colors.softRed,
+  {
+    name: 'Maracatu',
+    image: require('@/assets/images/alfaia.png'),
+  },
+  {
+    name: 'Maracatu',
+    image: require('@/assets/images/alfaia.png'),
+  },
+  {
+    name: 'Maracatu',
+    image: require('@/assets/images/alfaia.png'),
+  },
+  {
+    name: 'Maracatu',
+    image: require('@/assets/images/alfaia.png'),
+  },
 ];
 
 export default function Profile() {
   const { logout } = useAuth();
   const router = useRouter();
+  const { user } = useUser();
 
   const handleLogout = () => {
     logout();
@@ -47,7 +53,6 @@ export default function Profile() {
 
   return (
     <View style={styles.container}>
-      {/* Header */}
       <View style={styles.header}>
         <Image source={user.avatar} style={styles.avatar} />
         <Text style={styles.name}>{user.name}</Text>
@@ -57,8 +62,6 @@ export default function Profile() {
           <View style={[styles.progressBar, { width: `${(user.points / user.nextLevelPoints) * 100}%` }]} />
         </View>
       </View>
-
-      {/* Jornadas */}
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>Jornadas Concluídas</Text>
         {journeys.map(journey => (
@@ -69,23 +72,22 @@ export default function Profile() {
           </View>
         ))}
       </View>
-
-      {/* Recompensas */}
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>Recompensas Coletadas</Text>
         <FlatList
           data={collected}
           horizontal
-          keyExtractor={(_, index) => index.toString()}
+          keyExtractor={(item, index) => index.toString()}
           renderItem={({ item }) => (
-            <View style={[styles.rewardBlock, { backgroundColor: item }]} />
+            <View style={styles.rewardCard}>
+              <Image source={item.image} style={styles.rewardImage} />
+              <Text style={styles.rewardLabel}>{item.name}</Text>
+            </View>
           )}
           contentContainerStyle={{ gap: 12, paddingVertical: 10 }}
           showsHorizontalScrollIndicator={false}
         />
       </View>
-
-      {/* Sair */}
       <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
         <Text style={styles.logoutText}>Sair</Text>
       </TouchableOpacity>
@@ -111,7 +113,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   name: {
-    fontFamily: Fonts.primary,
+    fontFamily: Fonts.semiBold,
     fontSize: 16,
     fontWeight: 'bold',
     color: Colors.blueDark,
@@ -142,8 +144,8 @@ const styles = StyleSheet.create({
     marginBottom: 24,
   },
   sectionTitle: {
-    fontFamily: Fonts.primary,
-    fontSize: 14,
+    fontFamily: Fonts.semiBold,
+    fontSize: 16,
     fontWeight: 'bold',
     marginBottom: 10,
   },
@@ -173,6 +175,24 @@ const styles = StyleSheet.create({
     width: 50,
     height: 50,
     borderRadius: 8,
+  },
+  rewardCard: {
+    width: 80,
+    alignItems: 'center',
+    backgroundColor: Colors.softRed,
+    borderRadius: 8,
+  },
+  rewardImage: {
+    width: 50,
+    height: 50,
+    marginBottom: 6,
+    resizeMode: 'contain',
+  },
+  rewardLabel: {
+    fontFamily: Fonts.medium,
+    fontSize: 12,
+    color: Colors.black,
+    textAlign: 'center',
   },
   logoutButton: {
     marginTop: 20,

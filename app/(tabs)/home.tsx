@@ -2,12 +2,7 @@ import { View, Text, StyleSheet, FlatList, Image, TouchableOpacity } from 'react
 import Colors from '@/constants/colors';
 import Fonts from '@/constants/fonts';
 import { useRouter } from 'expo-router';
-
-const user = {
-  name: 'Folião Brincante',
-  points: 500,
-  level: 'Nível Peneira',
-};
+import { useUser } from '@/contexts/user-context';
 
 const recentQuizzes = [
   {
@@ -26,25 +21,24 @@ const recentQuizzes = [
 
 const recentRewards = [
   {
-    name: 'Cabelo',
-    image: require('@/assets/images/icon.png'),
+    name: 'Maracatu',
+    image: require('@/assets/images/alfaia.png'),
     color: Colors.softRed,
   },
 ];
 
 export default function HomeScreen() {
   const router = useRouter();
+  const { user } = useUser();
 
   return (
     <View style={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.welcome}>Bem vindo de volta</Text>
-        <View style={styles.userBox}>
-          <View style={styles.userIcon} />
-          <View style={styles.userInfo}>
-            <Text style={styles.userName}>{user.name}</Text>
-            <Text style={styles.userPoints}>Pontuação: {user.points} - {user.level}</Text>
-          </View>
+      <Text style={styles.welcome}>Bem vindo de volta!</Text>
+      <View style={styles.userBox}>
+        <Image source={user.avatar} style={styles.userIcon} />
+        <View style={styles.userInfo}>
+          <Text style={styles.userName}>{user.name}</Text>
+          <Text style={styles.userPoints}>Pontuação: {user.points} - Nível {user.level}</Text>
         </View>
       </View>
 
@@ -55,7 +49,7 @@ export default function HomeScreen() {
           onPress={() => router.push(`/quiz?quizId=${quiz.id}`)}
           activeOpacity={0.8}
         >
-          <View style={[styles.quizBox, { backgroundColor: quiz.color }]}>
+          <View style={[styles.quizBox, { backgroundColor: quiz.color }]}> 
             <Text style={styles.quizTitle}>{quiz.title}</Text>
             <Text style={styles.quizDescription}>{quiz.description}</Text>
           </View>
@@ -68,7 +62,7 @@ export default function HomeScreen() {
         horizontal
         keyExtractor={(item, index) => index.toString()}
         renderItem={({ item }) => (
-          <View style={[styles.rewardBox, { backgroundColor: item.color }]}>
+          <View style={[styles.rewardBox, { backgroundColor: item.color }]}> 
             <Image source={item.image} style={styles.rewardImage} />
             <Text style={styles.rewardText}>{item.name}</Text>
           </View>
@@ -85,18 +79,12 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: Colors.lightBeige,
     paddingHorizontal: 20,
-    paddingTop: 64,
-  },
-  header: {
-    backgroundColor: Colors.blueDark,
-    borderRadius: 20,
-    padding: 20,
-    marginBottom: 28,
+    paddingTop: 70,
   },
   welcome: {
-    color: Colors.white,
+    color: Colors.blueAlt,
     fontSize: 20,
-    fontFamily: Fonts.primary,
+    fontFamily: Fonts.bold,
     fontWeight: '600',
     marginBottom: 12,
   },
@@ -106,6 +94,7 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.white,
     borderRadius: 12,
     padding: 14,
+    marginBottom: 20,
   },
   userIcon: {
     width: 36,
@@ -130,8 +119,8 @@ const styles = StyleSheet.create({
     color: Colors.darkGray,
   },
   sectionTitle: {
-    fontSize: 15,
-    fontFamily: Fonts.primary,
+    fontSize: 20,
+    fontFamily: Fonts.semiBold,
     fontWeight: '700',
     marginBottom: 10,
     color: Colors.black,
@@ -142,7 +131,7 @@ const styles = StyleSheet.create({
     marginBottom: 14,
   },
   quizTitle: {
-    fontFamily: Fonts.primary,
+    fontFamily: Fonts.semiBold,
     fontSize: 14,
     color: Colors.white,
     fontWeight: 'bold',
@@ -168,8 +157,8 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
   },
   rewardText: {
-    fontFamily: Fonts.primary,
-    color: Colors.white,
+    fontFamily: Fonts.medium,
+    color: Colors.black,
     fontSize: 13,
     fontWeight: '500',
   },

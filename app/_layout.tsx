@@ -3,6 +3,7 @@ import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 import { useEffect, useState } from 'react';
 import { AuthProvider, useAuth } from '@/contexts/auth-context';
+import { UserProvider } from '@/contexts/user-context';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -38,12 +39,14 @@ export default function RootLayout() {
   }, [fontsLoaded]);
 
   if (!fontsLoaded) {
-    return null; // evita que a UI apareça sem fonte
+    return null;
   }
 
   return (
     <AuthProvider>
-      <ProtectedLayout />
+      <UserProvider>
+        <ProtectedLayout />
+      </UserProvider>
     </AuthProvider>
   );
 }
