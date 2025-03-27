@@ -3,8 +3,7 @@ import { View, Text, StyleSheet, FlatList, Alert, TouchableOpacity } from 'react
 import Colors from '@/constants/colors';
 import Fonts from '@/constants/fonts';
 import { Ionicons } from '@expo/vector-icons';
-
-const initialBalance = 450;
+import { useUser } from '@/contexts/user-context';
 
 const storeItems = [
   {
@@ -42,7 +41,7 @@ const storeItems = [
 ];
 
 export default function StoreScreen() {
-  const [balance, setBalance] = useState(initialBalance);
+  const { user, setUser } = useUser();
   const [purchased, setPurchased] = useState<string[]>([]);
 
   const handlePurchase = (item: typeof storeItems[0]) => {
@@ -51,13 +50,13 @@ export default function StoreScreen() {
       return;
     }
 
-    if (balance < item.cost) {
+    if (user.coins < item.cost) {
       Alert.alert('Saldo insuficiente', 'Você não tem moedas suficientes.');
       return;
     }
 
     if (item.cost > 0) {
-      setBalance(prev => prev - item.cost);
+      setUser(prev => ({ ...prev, coins: prev.coins - item.cost }));
     }
     setPurchased(prev => [...prev, item.id]);
     Alert.alert('Sucesso', `Você adquiriu "${item.title}"!`);
@@ -69,7 +68,7 @@ export default function StoreScreen() {
         <Text style={styles.headerTitle}>LOJA CULTURAL</Text>
         <View style={styles.balanceContainer}>
           <Ionicons name="wallet-outline" size={16} color={Colors.white} />
-          <Text style={styles.balanceText}>{balance}</Text>
+          <Text style={styles.balanceText}>{user.coins}</Text>
         </View>
       </View>
 
