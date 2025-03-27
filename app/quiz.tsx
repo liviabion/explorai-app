@@ -57,10 +57,10 @@ export default function QuizScreen() {
 
   if (finished) {
     return (
-      <View style={styles.container}>
+      <View style={styles.containerFinal}>
         <Text style={styles.quizTitle}>Quiz Finalizado!</Text>
         <Text style={styles.pointsText}>Pontuação final: {score} pts</Text>
-        <TouchableOpacity style={styles.button} onPress={() => router.replace('/')}> 
+        <TouchableOpacity style={styles.buttonFinal} onPress={() => router.replace('/(tabs)/home')}> 
           <Text style={styles.buttonText}>Voltar para Início</Text>
         </TouchableOpacity>
       </View>
@@ -132,7 +132,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: Colors.lightBeige,
     padding: 20,
-    paddingTop: 60,
+    paddingTop: 80,
   },
   header: {
     backgroundColor: Colors.blueDark,
@@ -235,6 +235,24 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   buttonText: {
+    color: Colors.white,
+    fontFamily: Fonts.primary,
+    fontWeight: 'bold',
+  },
+  containerFinal: {
+    flex: 1,
+    backgroundColor: Colors.blueDark,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  buttonFinal: {
+    backgroundColor: Colors.lightRed,
+    padding: 16,
+    marginTop: 24,
+    borderRadius: 10,
+    alignItems: 'center',
+  },
+  buttonTextFinal: {
     color: Colors.white,
     fontFamily: Fonts.primary,
     fontWeight: 'bold',
