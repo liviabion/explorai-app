@@ -23,7 +23,7 @@
       "favicon": "./assets/images/favicon.png"
     },
     "splash": {
-      "image": "./assets/images/splash-icon.png",
+      "image": "./assets/images/iconExplorai.png",
       "resizeMode": "contain",
       "backgroundColor": "#0A2C7C",
       "imageWidth": 200
