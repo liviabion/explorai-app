@@ -4,23 +4,7 @@ import { useRouter } from 'expo-router';
 import Colors from '@/constants/colors';
 import Fonts from '@/constants/fonts';
 import { useUser } from '@/contexts/user-context';
-
-const journeys = [
-  {
-    id: 1,
-    title: 'MAPA DO FOGUETE',
-    description: 'COMPLETOU TODOS OS DESAFIOS',
-    color: Colors.softRed,
-    stars: 3,
-  },
-  {
-    id: 2,
-    title: 'ROTA DOS ENGENHOS',
-    description: 'COMPLETOU 4 DE 8 DESAFIOS',
-    color: Colors.blue,
-    stars: 2,
-  },
-];
+import quizzes from '@/data/quizzes';
 
 const collected = [
   {
@@ -51,6 +35,13 @@ export default function Profile() {
     router.replace('/');
   };
 
+  const allJourneys = Object.entries(quizzes).map(([id, quiz], index) => ({
+    id: parseInt(id),
+    title: quiz.title,
+    description: quiz.category,
+    color: index % 2 === 0 ? Colors.softRed : Colors.blue,
+  }));
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -64,16 +55,15 @@ export default function Profile() {
       </View>
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>Jornadas Concluídas</Text>
-        {journeys.map(journey => (
+        {allJourneys.map(journey => (
           <View key={journey.id} style={[styles.journeyCard, { backgroundColor: journey.color }]}>
             <Text style={styles.journeyTitle}>{journey.title}</Text>
             <Text style={styles.journeyDescription}>{journey.description}</Text>
-            <Text style={styles.journeyStars}>{'★'.repeat(journey.stars)}</Text>
           </View>
         ))}
       </View>
       <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Recompensas Coletadas</Text>
+        <Text style={styles.sectionTitle}>Medalhas Coletadas</Text>
         <FlatList
           data={collected}
           horizontal
@@ -165,11 +155,6 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: Colors.white,
     marginTop: 2,
-  },
-  journeyStars: {
-    marginTop: 8,
-    fontSize: 14,
-    color: Colors.white,
   },
   rewardBlock: {
     width: 50,

@@ -3,21 +3,9 @@ import Colors from '@/constants/colors';
 import Fonts from '@/constants/fonts';
 import { useRouter } from 'expo-router';
 import { useUser } from '@/contexts/user-context';
+import quizzes from '@/data/quizzes';
 
-const recentQuizzes = [
-  {
-    id: 1,
-    title: 'Ritmos de Maracatu',
-    description: 'Aprendendo os toques do Maracatu',
-    color: Colors.softRed,
-  },
-  {
-    id: 2,
-    title: 'Rotas dos engenhos',
-    description: '4/8 concluído',
-    color: Colors.blue,
-  },
-];
+const recentQuizIds = [1, 2];
 
 const recentRewards = [
   {
@@ -30,6 +18,13 @@ const recentRewards = [
 export default function HomeScreen() {
   const router = useRouter();
   const { user } = useUser();
+
+  const recentQuizzes = recentQuizIds.map(id => ({
+    id,
+    title: quizzes[id].title,
+    category: quizzes[id].category,
+    color: id === 1 ? Colors.softRed : Colors.blue,
+  }));
 
   return (
     <View style={styles.container}>
@@ -51,12 +46,12 @@ export default function HomeScreen() {
         >
           <View style={[styles.quizBox, { backgroundColor: quiz.color }]}> 
             <Text style={styles.quizTitle}>{quiz.title}</Text>
-            <Text style={styles.quizDescription}>{quiz.description}</Text>
+            <Text style={styles.quizDescription}>{quiz.category}</Text>
           </View>
         </TouchableOpacity>
       ))}
 
-      <Text style={styles.sectionTitle}>Recompensas recentes</Text>
+      <Text style={styles.sectionTitle}>Medalhas recentes</Text>
       <FlatList
         data={recentRewards}
         horizontal

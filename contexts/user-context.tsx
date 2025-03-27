@@ -13,7 +13,7 @@ const defaultUser: UserType = {
   name: 'FOLIÃO BRINCANTE',
   level: 4,
   points: 400,
-  nextLevelPoints: 500,
+  nextLevelPoints: 1000,
   avatar: require('@/assets/images/laursa.png'),
 };
 
