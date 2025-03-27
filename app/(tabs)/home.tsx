@@ -1,6 +1,7 @@
-import { View, Text, StyleSheet, FlatList, Image } from 'react-native';
+import { View, Text, StyleSheet, FlatList, Image, TouchableOpacity } from 'react-native';
 import Colors from '@/constants/colors';
 import Fonts from '@/constants/fonts';
+import { useRouter } from 'expo-router';
 
 const user = {
   name: 'Folião Brincante',
@@ -10,11 +11,13 @@ const user = {
 
 const recentQuizzes = [
   {
+    id: 1,
     title: 'Ritmos de Maracatu',
     description: 'Aprendendo os toques do Maracatu',
     color: Colors.softRed,
   },
   {
+    id: 2,
     title: 'Rotas dos engenhos',
     description: '4/8 concluído',
     color: Colors.blue,
@@ -30,9 +33,12 @@ const recentRewards = [
 ];
 
 export default function HomeScreen() {
+  const router = useRouter();
+
   return (
     <View style={styles.container}>
-      <Text style={styles.welcome}>Bem vindo de volta</Text>
+      <View style={styles.header}>
+        <Text style={styles.welcome}>Bem vindo de volta</Text>
         <View style={styles.userBox}>
           <View style={styles.userIcon} />
           <View style={styles.userInfo}>
@@ -40,13 +46,20 @@ export default function HomeScreen() {
             <Text style={styles.userPoints}>Pontuação: {user.points} - {user.level}</Text>
           </View>
         </View>
+      </View>
 
-      <Text style={styles.sectionTitle}>Ultimas interações</Text>
+      <Text style={styles.sectionTitle}>Últimas interações</Text>
       {recentQuizzes.map((quiz, index) => (
-        <View key={index} style={[styles.quizBox, { backgroundColor: quiz.color }]}> 
-          <Text style={styles.quizTitle}>{quiz.title}</Text>
-          <Text style={styles.quizDescription}>{quiz.description}</Text>
-        </View>
+        <TouchableOpacity
+          key={index}
+          onPress={() => router.push(`/quiz?quizId=${quiz.id}`)}
+          activeOpacity={0.8}
+        >
+          <View style={[styles.quizBox, { backgroundColor: quiz.color }]}>
+            <Text style={styles.quizTitle}>{quiz.title}</Text>
+            <Text style={styles.quizDescription}>{quiz.description}</Text>
+          </View>
+        </TouchableOpacity>
       ))}
 
       <Text style={styles.sectionTitle}>Recompensas recentes</Text>
@@ -55,7 +68,7 @@ export default function HomeScreen() {
         horizontal
         keyExtractor={(item, index) => index.toString()}
         renderItem={({ item }) => (
-          <View style={[styles.rewardBox, { backgroundColor: item.color }]}> 
+          <View style={[styles.rewardBox, { backgroundColor: item.color }]}>
             <Image source={item.image} style={styles.rewardImage} />
             <Text style={styles.rewardText}>{item.name}</Text>
           </View>
@@ -72,20 +85,27 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: Colors.lightBeige,
     paddingHorizontal: 20,
-    paddingTop: 70,
+    paddingTop: 64,
+  },
+  header: {
+    backgroundColor: Colors.blueDark,
+    borderRadius: 20,
+    padding: 20,
+    marginBottom: 28,
   },
   welcome: {
-    color: Colors.blueDark,
+    color: Colors.white,
     fontSize: 20,
-    fontFamily: Fonts.bold,
+    fontFamily: Fonts.primary,
     fontWeight: '600',
     marginBottom: 12,
   },
   userBox: {
     flexDirection: 'row',
     alignItems: 'center',
+    backgroundColor: Colors.white,
     borderRadius: 12,
-    marginBottom: 20,
+    padding: 14,
   },
   userIcon: {
     width: 36,
